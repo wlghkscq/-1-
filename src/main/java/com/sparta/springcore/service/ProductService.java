@@ -23,9 +23,9 @@ public class ProductService {
     }
 
 
-    public Product createProduct(ProductRequestDto requestDto){
+    public Product createProduct(ProductRequestDto requestDto, Long userId){
 // 요청받은 DTO 로 DB에 저장할 객체 만들기
-        Product product = new Product(requestDto);
+        Product product = new Product(requestDto, userId);
 
         productRepository.save(product);
 
@@ -45,9 +45,15 @@ public class ProductService {
         return product;
     }
 
-    public List<Product> getProducts(){
-        List<Product> products = productRepository.findAll();
+    // 회원 ID로 등록된 상품 조회
+    public List<Product> getProducts(Long userId){
 
-        return products;
+        return productRepository.findAllByUserId(userId);
+    }
+
+
+    // (관리자용) 모든 회원의 상품 전체 조회
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
     }
 }
